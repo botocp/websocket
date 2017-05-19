@@ -1,0 +1,72 @@
+﻿
+<link rel="stylesheet" type="text/css" href="main.css">  
+<div id="output"></div>
+<input type="text">
+<script>
+    var channelName = location.href.replace( /\/|:|#|%|\.|\[|\]/g , ''); // using URL as room-name
+    // var websocket = new WebSocket('ws://wsnodejs.jit.su:80');
+    var websocket = new WebSocket('ws://' + document.domain + ':12034');
+    websocket.onopen = function() {
+        websocket.push(JSON.stringify({
+            open: true,
+            channel: channelName
+        }));
+
+        if (!window.username) window.username = prompt('Please enter your full name') || 'Anonymous';
+
+        setTimeout(function() {
+            websocket.send({
+                sender: window.username,
+                message: 'is ready to share text messages with you.'
+            });
+        }, 1000);
+
+        input.disabled = false;
+    };
+    websocket.push = websocket.send;
+    websocket.send = function(data) {
+        websocket.push(JSON.stringify({
+            data: data,
+            channel: channelName
+        }));
+    };
+
+    websocket.onmessage = function(e) {
+        appendDIV(JSON.parse(e.data));
+    };
+</script>
+<script>
+    // uncomment this line to use auto generated usernames!
+    // window.username = (Math.round(Math.random() * 60535) + 5000);
+
+    input = document.querySelector('input[type=text]');
+    input.onkeypress = function(e) {
+        if (e.keyCode !== 13 || !this.value.length) return;
+        websocket.send({
+            sender: window.username,
+            message: this.value
+        });
+
+        /* self preview! */
+        appendDIV({
+            sender: window.username,
+            message: this.value
+        });
+
+        this.value = '';
+    };
+
+    output = document.querySelector('#output');
+
+    function appendDIV(data) {
+        var div = document.createElement('div');
+        div.innerHTML = '<span class="name">' + data.sender + ':</span><span class="message">' + data.message + '</div>';
+        output.insertBefore(div, output.firstChild);
+
+        div.tabIndex = 0;
+        div.focus();
+
+        input.focus();
+    }
+</script>
+

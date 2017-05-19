@@ -1,0 +1,38 @@
+{
+  "name": "websocket-over-nodejs",
+  "subdomain": "wsnodejs",
+  "preferGlobal": true,
+  "version": "0.0.2-2",
+  "author": {
+    "name": "Muaz Khan",
+    "email": "muazkh@gmail.com"
+  },
+  "description": "WebSocket-over-Nodejs for WebRTC Experiments: https://www.webrtc-experiment.com",
+  "contributors": [
+    {
+      "name": "Muaz Khan",
+      "email": "muazkh@gmail.com"
+    }
+  ],
+  "scripts": {
+    "start": "signaler.js"
+  },
+  "main": "signaler.js",
+  "repository": {
+    
+  },
+  "keywords": [
+    
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  },
+  "dependencies": {
+    "websocket": "1.0.x",
+    "node-static": "0.7.x"
+  },
+  "bugs": {
+    
+  
+}
